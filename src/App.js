@@ -3,19 +3,27 @@ import React, {useState} from 'react'
 
 
 const FromInput = (props) => {
+
    const [todo, setTodo] = useState("");
+
+   const OnHandleSubmit = (e) => {
+     e.preventDefault();
+     console.log(`Submit: ${todo}`);
+     props.onTodoSubmit(todo);
+     setTodo("");
+   }
+
+   const OnUpdate = (e) => {
+     setTodo(e.currentTarget.value);
+   }
+
    return(
      <>
-      <form onSubmit= {(e)=>  {
-        e.preventDefault();
-        console.log(`Submit: ${todo}`);
-        props.onTodoSubmit(todo);
-        setTodo("");
-      }}>
+      <form onSubmit= {OnHandleSubmit}>
         <input
           id="todo-input"
           type="text"
-          onChange={(e)=> setTodo(e.currentTarget.value)}
+          onChange={OnUpdate}
         />
         <button >+</button>
 
@@ -27,18 +35,27 @@ const FromInput = (props) => {
 
 const Todo = (props) => {
   console.log(props)
+
+  const DepartOnFinish = () => {
+    props.onFinish({ todo:props.createTodo, date:props.date })
+  }
+
   return(
     <div style={{display: 'flex'}}>
       <li>{props.createTodo}</li>
       <button        
         type="submit"
-        onClick={() => props.onFinish({ todo:props.createTodo, date:props.date })}
+        onClick={DepartOnFinish}
         >{'\u2713'}</button>
     </div>
 
   )
 }
  
+
+
+
+
 function App() {
 
   const [todos, setTodos] = useState([])
